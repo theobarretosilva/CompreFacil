@@ -16,11 +16,11 @@ async function connectWithRetry() {
       return connection;
     } catch (error) {
       attempts++;
-      console.error(`Failed to connect to RabbitMQ (attempt ${attempts}):`, error.message);
+      console.error(`Falha ao tentat conectar com o RabbitMQ (attempt ${attempts}):`, error.message);
       await new Promise(resolve => setTimeout(resolve, 5000));
     }
   }
-  throw new Error('Could not connect to RabbitMQ after several attempts');
+  throw new Error('Não foi possível conectar-se com RabbitMQ');
 }
 
 async function receiveFromQueue() {
@@ -47,9 +47,9 @@ app.get('/notification', (req, res) => {
   if (lastMessage) {
     res.json({ message: lastMessage });
   } else {
-    res.json({ message: 'No notifications available' });
+    res.json({ message: 'Sem novas notificações disponíveis' });
   }
 });
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`Notification service listening on port ${port}`));
+app.listen(port, () => console.log(`Sistema de Notificação está disponível na porta ${port}`));
