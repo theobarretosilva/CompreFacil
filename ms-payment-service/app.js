@@ -39,6 +39,7 @@ app.put('/transactions/:id/success', async (req, res) => {
       }
 
       res.status(200).json({ message: 'Transaction updated successfully', transaction: result.rows[0] });
+      await sendToQueue(`Transaction number ${transactionId} confirmed succesfully`);
   } catch (error) {
       console.error('Error updating transaction:', error);
       res.status(500).json({ error: 'Internal server error' });

@@ -27,7 +27,7 @@ services:
       context: ./ms-payment-service
     environment:
       DATABASE_URL: postgres://myuser:mypassword@postgres:5432/paymentdb
-      RABBITMQ_URL: amqp://myuser:mypassword@rabbitmq:5672
+      RABBITMQ_URL: amqp://myuser:mypassword@rabbitmq:5672//
     depends_on:
       - postgres
       - rabbitmq
@@ -38,7 +38,7 @@ services:
     build:
       context: ./ms-notification-service
     environment:
-      RABBITMQ_URL: amqp://myuser:mypassword@rabbitmq:5672
+      RABBITMQ_URL: amqp://myuser:mypassword@rabbitmq:5672//
     depends_on:
       - rabbitmq
     ports:
@@ -46,3 +46,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  rabbitmq_go_net: 
+    driver: bridge
