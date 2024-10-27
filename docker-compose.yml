@@ -5,14 +5,12 @@ services:
     image: postgres:13
     environment:
       POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: paymentdb
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./ms-payment-service/init_users.sql:/docker-entrypoint-initdb.d/init_users.sql
-      - ./ms-payment-service/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./initdb:/docker-entrypoint-initdb.d
 
   rabbitmq:

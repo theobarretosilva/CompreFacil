@@ -25,5 +25,25 @@ app.post('/transaction', async (req, res) => {
   res.status(201).send('Transaction request received');
 });
 
+app.put('/transactions/:id/success', async (req, res) => {
+  const transactionId = req.params.id;
+
+  try {
+      const result = await pool.query(
+          'UPDATE transactions SET status = $1 WHERE id = $2 RETURNING *',
+          ['sucesso', transactionId]
+      );
+
+      if (result.rowCount === 0) {
+          return res.status(404).json({ error: 'Transaction not found' });
+      }
+
+      res.status(200).json({ message: 'Transaction updated successfully', transaction: result.rows[0] });
+  } catch (error) {
+      console.error('Error updating transaction:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Payment service listening on port ${port}`));

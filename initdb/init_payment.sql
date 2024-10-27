@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     amount DECIMAL(10, 2) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending'
 );
 
 CREATE TABLE transaction_logs (
@@ -19,3 +19,6 @@ CREATE TABLE transaction_logs (
     log_message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (username, email, password_hash) VALUES 
+('testuser', 'testuser@example.com', 'securepassword');
