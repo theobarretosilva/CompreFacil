@@ -21,8 +21,8 @@ async function sendToQueue(message) {
 app.post('/transaction', async (req, res) => {
   const { userId, amount } = req.body;
   await pool.query('INSERT INTO transactions (user_id, amount, status) VALUES ($1, $2, $3)', [userId, amount, 'pending']);
-  await sendToQueue('Transaction request received');
-  res.status(201).send('Transaction request received');
+  await sendToQueue('Nova Transação Realizada! Valor: '+amount+", Status: "+status);
+  res.status(201).send('Transição requisitada realizada!');
 });
 
 app.put('/transactions/:id/success', async (req, res) => {
@@ -35,16 +35,16 @@ app.put('/transactions/:id/success', async (req, res) => {
       );
 
       if (result.rowCount === 0) {
-          return res.status(404).json({ error: 'Transaction not found' });
+          return res.status(404).json({ error: 'ID de transação não encontrada' });
       }
 
-      res.status(200).json({ message: 'Transaction updated successfully', transaction: result.rows[0] });
-      await sendToQueue(`Transaction number ${transactionId} confirmed succesfully`);
+      res.status(200).json({ message: 'A transação foi aprovada', transaction: result.rows[0] });
+      await sendToQueue(`Transação ${transactionId} aprovada!`);
   } catch (error) {
-      console.error('Error updating transaction:', error);
+      console.error('Erro ao atualizar a transação:', error);
       res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`Payment service listening on port ${port}`));
+app.listen(port, () => console.log(`Sistema de Pagamento disponível na porta ${port}`));
