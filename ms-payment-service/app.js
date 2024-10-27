@@ -12,7 +12,7 @@ const pool = new Pool({
 });
 
 async function sendToQueue(message) {
-  const connection = await connect(process.env.RABBITMQ_URL);
+  const connection = await amqp.connect(process.env.RABBITMQ_URL);
   const channel = await connection.createChannel();
   await channel.assertQueue('transactionQueue');
   channel.sendToQueue('transactionQueue', Buffer.from(message));
