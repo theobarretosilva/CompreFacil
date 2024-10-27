@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 async function receiveFromQueue() {
-  const connection = await connect(process.env.RABBITMQ_URL);
+  const connection = await amqp.connect(process.env.RABBITMQ_URL);
   const channel = await connection.createChannel();
   await channel.assertQueue('transactionQueue');
   channel.consume('transactionQueue', (msg) => {
